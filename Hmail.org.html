@@ -3,268 +3,122 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Hmail.org - Почта</title>
+<title>Hmail.org</title>
 <style>
   body {
-    margin: 0; padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #fce4e4;
-    color: #a12323;
-    display: flex; flex-direction: column; min-height: 100vh;
+    margin: 0; padding: 0; 
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+    color: #660000;
   }
-  header {
-    background: #db5656;
-    color: white;
-    padding: 15px 20px;
-    font-size: 1.7rem;
-    font-weight: bold;
-    text-align: center;
-    letter-spacing: 2px;
-    user-select: none;
-  }
-  main {
-    flex-grow: 1;
-    display: flex;
+  #auth-panel, #mailbox, #reset-password-panel {
+    max-width: 400px;
+    margin: 30px auto;
     padding: 20px;
-    gap: 20px;
+    border-radius: 10px;
+    background: #fff0f0;
+    box-shadow: 0 4px 10px rgba(204,0,0,0.15);
   }
-  /* Левое меню (вход/регистрация) */
-  #auth-panel {
-    flex: 0 0 300px;
-    background: #f9c9c9;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 0 10px #d46f6f;
-    animation: fadeIn 1s ease forwards;
-  }
-  #auth-panel h2 {
-    margin-top: 0;
-  }
-  label {
-    display: block;
-    margin-top: 15px;
-  }
-  input[type="text"], input[type="password"] {
+  input, button {
     width: 100%;
-    padding: 8px 10px;
-    margin-top: 6px;
-    border-radius: 6px;
-    border: 1.5px solid #a12323;
-    font-size: 1rem;
+    margin: 8px 0;
+    padding: 10px;
+    border: 1px solid #cc4444;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
   }
   button {
-    margin-top: 20px;
-    width: 100%;
-    background: #db5656;
-    border: none;
+    background: #cc4444;
     color: white;
-    padding: 12px;
-    font-size: 1.1rem;
-    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    font-weight: bold;
+    transition: background 0.3s ease;
   }
   button:hover {
-    background: #a12323;
-  }
-  /* Почтовый ящик */
-  #mailbox {
-    flex-grow: 1;
-    background: #ffe3e3;
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 0 10px #d46f6f;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.5s ease;
-  }
-  #mailbox.active {
-    opacity: 1;
-    pointer-events: auto;
-  }
-  #user-info {
-    padding: 10px 20px;
-    background: #db5656;
-    color: white;
-    font-weight: bold;
-    font-size: 1.2rem;
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-    display: flex; justify-content: space-between; align-items: center;
-  }
-  #user-info button {
-    width: auto;
-    background: #a12323;
-    padding: 6px 12px;
-    font-size: 0.9rem;
+    background: #aa3333;
   }
   #messages-list {
-    flex-grow: 1;
+    max-height: 300px;
     overflow-y: auto;
-    padding: 15px 20px;
+    background: #fff0f0;
+    padding: 10px;
+    border: 1px solid #cc4444;
+    border-radius: 5px;
   }
   .message {
-    background: white;
-    margin-bottom: 12px;
-    padding: 12px;
-    border-radius: 8px;
-    box-shadow: 0 0 5px #c77;
-    animation: slideIn 0.3s ease forwards;
+    margin-bottom: 8px;
+    padding: 6px;
+    border-radius: 5px;
+    background: #ffdede;
   }
-  .message.from-me {
-    background: #ffb6b6;
-    align-self: flex-end;
+  .from-me {
+    background: #ffb3b3;
+    text-align: right;
   }
-  .message strong {
-    color: #a12323;
+  #user-email {
+    margin-bottom: 15px;
+    font-weight: bold;
   }
-  #compose {
-    padding: 15px 20px;
-    border-top: 1px solid #d46f6f;
-    display: flex;
-    gap: 10px;
-  }
-  #compose input[type="text"] {
-    flex-grow: 1;
-    border-radius: 8px;
-    padding: 10px;
-    font-size: 1rem;
-    border: 1.5px solid #a12323;
-  }
-  #compose button {
-    flex-shrink: 0;
-    width: 120px;
-  }
-  /* Поддержка */
-  #support {
-    margin-top: 20px;
-    background: #f9c9c9;
-    padding: 12px;
-    border-radius: 10px;
-    box-shadow: 0 0 8px #d46f6f;
-    font-size: 0.9rem;
-  }
-  #support h3 {
-    margin-top: 0;
-  }
-  #support p {
-    margin-bottom: 6px;
-  }
-  #support textarea {
-    width: 100%;
-    height: 70px;
-    resize: none;
-    border-radius: 6px;
-    border: 1.5px solid #a12323;
-    padding: 8px;
-    font-size: 1rem;
-  }
-  #support button {
-    width: 100%;
-    margin-top: 8px;
-  }
-  footer {
-    text-align: center;
-    padding: 12px 0;
-    background: #db5656;
-    color: white;
-    font-size: 0.9rem;
-    user-select: none;
-  }
-  @keyframes fadeIn {
-    from {opacity: 0;}
-    to {opacity: 1;}
-  }
-  @keyframes slideIn {
-    from {opacity: 0; transform: translateY(15px);}
-    to {opacity: 1; transform: translateY(0);}
+  #reset-feedback {
+    min-height: 20px;
   }
 </style>
 </head>
 <body>
 
-<header>Hmail.org</header>
+<div id="auth-panel">
+  <h2>Регистрация</h2>
+  <input id="reg-username" placeholder="Имя пользователя" />
+  <input id="reg-password" type="password" placeholder="Пароль (опционально)" />
+  <button id="register-btn">Зарегистрироваться</button>
 
-<main>
-  <section id="auth-panel">
-    <h2>Войти или создать почту</h2>
+  <h2>Вход</h2>
+  <input id="login-email" placeholder="Email (например, username@hmail.org)" />
+  <input id="login-password" type="password" placeholder="Пароль" />
+  <button id="login-btn">Войти</button>
+  <button id="guest-btn">Войти как гость</button>
 
-    <div id="register-form">
-      <label>Имя пользователя (без @hmail.org):
-        <input type="text" id="reg-username" autocomplete="off" />
-      </label>
-      <label>Пароль (не обязательно):
-        <input type="password" id="reg-password" autocomplete="new-password" />
-      </label>
-      <button id="register-btn">Создать аккаунт</button>
-    </div>
+  <h2>Сброс пароля</h2>
+  <div id="reset-password-panel">
+    <input type="text" id="reset-username" placeholder="Введите имя пользователя для сброса пароля" />
+    <button id="reset-password-btn">Сбросить пароль</button>
+    <div id="reset-feedback"></div>
+  </div>
+</div>
 
-    <hr />
+<div id="mailbox" style="display:none;">
+  <div id="user-email"></div>
+  <button id="logout-btn">Выйти</button>
+  
+  <h3>Сообщения</h3>
+  <div id="messages-list"></div>
 
-    <div id="login-form">
-      <label>Полное имя (например, user@hmail.org):
-        <input type="text" id="login-email" autocomplete="username" />
-      </label>
-      <label>Пароль:
-        <input type="password" id="login-password" autocomplete="current-password" />
-      </label>
-      <button id="login-btn">Войти</button>
-    </div>
+  <form id="compose">
+    <input id="recipient" placeholder="Имя получателя" />
+    <textarea id="message-text" placeholder="Текст сообщения"></textarea>
+    <button type="submit">Отправить</button>
+  </form>
 
-    <hr />
+  <h3>Поддержка</h3>
+  <textarea id="support-message" placeholder="Введите сообщение поддержки"></textarea>
+  <button id="support-send">Отправить поддержку</button>
+  <div id="support-feedback"></div>
+</div>
 
-    <button id="guest-btn">Войти как гость</button>
-  </section>
-
-  <section id="mailbox">
-    <div id="user-info">
-      <span id="user-email"></span>
-      <button id="logout-btn">Выйти</button>
-    </div>
-
-    <div id="messages-list"></div>
-
-    <form id="compose">
-      <input type="text" id="recipient" placeholder="Кому (имя без @hmail.org)" autocomplete="off" required />
-      <input type="text" id="message-text" placeholder="Написать сообщение..." autocomplete="off" required />
-      <button type="submit">Отправить</button>
-    </form>
-
-    <div id="support">
-      <h3>Поддержка</h3>
-      <p>Если есть вопросы или проблемы — напишите нам:</p>
-      <textarea id="support-message" placeholder="Ваше сообщение"></textarea>
-      <button id="support-send">Отправить поддержку</button>
-      <div id="support-feedback" style="margin-top:8px;color:#a12323;"></div>
-    </div>
-  </section>
-</main>
-
-<footer>© 2025 Hmail.org Все права защищены.</footer>
-
-<!-- Firebase SDK (compat версии для простоты) -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
 <script>
-  // Конфигурация Firebase из твоего аккаунта
+  // твой firebaseConfig и инициализация остаются без изменений
   const firebaseConfig = {
-    apiKey: "AIzaSyBqdQ2iUlh7XYXNgsO2YlCtUZX-8-l8wRQ",
-    authDomain: "hmail-7b2c2.firebaseapp.com",
-    projectId: "hmail-7b2c2",
-    storageBucket: "hmail-7b2c2.appspot.com",
-    messagingSenderId: "694751482331",
-    appId: "1:694751482331:web:76057c74cd82e78bf3d7fe"
+    // ...тут твои данные конфигурации...
   };
-
-  // Инициализация Firebase
   firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();
   const db = firebase.firestore();
 
-  // Элементы UI
   const regUsernameInput = document.getElementById('reg-username');
   const regPasswordInput = document.getElementById('reg-password');
   const registerBtn = document.getElementById('register-btn');
@@ -277,10 +131,12 @@
 
   const authPanel = document.getElementById('auth-panel');
   const mailbox = document.getElementById('mailbox');
+
   const userEmailSpan = document.getElementById('user-email');
   const logoutBtn = document.getElementById('logout-btn');
 
   const messagesList = document.getElementById('messages-list');
+
   const composeForm = document.getElementById('compose');
   const recipientInput = document.getElementById('recipient');
   const messageTextInput = document.getElementById('message-text');
@@ -289,13 +145,17 @@
   const supportSendBtn = document.getElementById('support-send');
   const supportFeedback = document.getElementById('support-feedback');
 
-  // Помощник для генерации email с @hmail.org
+  // Элементы для сброса пароля
+  const resetUsernameInput = document.getElementById('reset-username');
+  const resetPasswordBtn = document.getElementById('reset-password-btn');
+  const resetFeedback = document.getElementById('reset-feedback');
+
   function makeEmail(username) {
     return username.trim().toLowerCase() + '@hmail.org';
   }
 
-  // Создание пользователя (регистрация)
-  registerBtn.addEventListener('click', () => {
+  // Регистрация с проверкой существования email и отправкой письма верификации
+  registerBtn.addEventListener('click', async () => {
     const username = regUsernameInput.value.trim();
     let password = regPasswordInput.value;
     if (!username) {
@@ -303,12 +163,25 @@
       return;
     }
     const email = makeEmail(username);
-
-    if (!password) password = Math.random().toString(36).slice(-8); // случайный пароль если пустой
-
+    try {
+      const methods = await auth.fetchSignInMethodsForEmail(email);
+      if (methods.length > 0) {
+        alert('Этот пользователь уже зарегистрирован. Пожалуйста, войдите или выберите другое имя.');
+        return;
+      }
+    } catch (error) {
+      alert('Ошибка проверки email: ' + error.message);
+      return;
+    }
+    if (!password) password = Math.random().toString(36).slice(-8);
     auth.createUserWithEmailAndPassword(email, password)
-      .then(({ user }) => {
-        alert(`Аккаунт ${email} создан! Пожалуйста, войдите.`);
+      .then(async ({ user }) => {
+        try {
+          await user.sendEmailVerification();
+          alert(`Аккаунт ${email} создан! На вашу почту отправлено письмо для подтверждения. Пожалуйста, подтвердите email и войдите.`);
+        } catch (e) {
+          alert('Ошибка отправки письма подтверждения: ' + e.message);
+        }
         regUsernameInput.value = '';
         regPasswordInput.value = '';
       })
@@ -317,7 +190,7 @@
       });
   });
 
-  // Вход по email и паролю
+  // Вход с проверкой подтверждения email
   loginBtn.addEventListener('click', () => {
     const email = loginEmailInput.value.trim();
     const password = loginPasswordInput.value;
@@ -326,12 +199,18 @@
       return;
     }
     auth.signInWithEmailAndPassword(email, password)
+      .then(({ user }) => {
+        if (!user.emailVerified) {
+          alert('Пожалуйста, подтвердите ваш email, прежде чем войти.');
+          auth.signOut();
+        }
+      })
       .catch(error => {
         alert('Ошибка входа: ' + error.message);
       });
   });
 
-  // Вход как гость (анонимно)
+  // Вход как гость
   guestBtn.addEventListener('click', () => {
     auth.signInAnonymously()
       .catch(error => {
@@ -344,26 +223,31 @@
     auth.signOut();
   });
 
-  // Слушаем изменения авторизации
+  // Слушатель изменения авторизации
   auth.onAuthStateChanged(user => {
     if (user) {
       authPanel.style.display = 'none';
-      mailbox.classList.add('active');
+      mailbox.style.display = 'block';
+
       if (user.isAnonymous) {
         userEmailSpan.textContent = 'Гость (anon)';
       } else {
-        userEmailSpan.textContent = user.email;
+        userEmailSpan.innerHTML = `
+          Email: ${user.email} <br/>
+          UID: ${user.uid} <br/>
+          Подтвержден: ${user.emailVerified ? 'Да' : 'Нет'}
+        `;
       }
       subscribeMessages(user);
       updateOnlineStatus(user, true);
     } else {
-      mailbox.classList.remove('active');
+      mailbox.style.display = 'none';
       authPanel.style.display = 'block';
       messagesList.innerHTML = '';
+      userEmailSpan.textContent = '';
     }
   });
 
-  // Обновляем статус онлайн/офлайн
   function updateOnlineStatus(user, online) {
     if (!user || user.isAnonymous) return;
     const userStatusRef = db.collection('onlineStatus').doc(user.uid);
@@ -373,7 +257,6 @@
       lastChanged: firebase.firestore.FieldValue.serverTimestamp()
     });
   }
-
   window.addEventListener('beforeunload', () => {
     const user = auth.currentUser;
     if (user && !user.isAnonymous) {
@@ -381,10 +264,9 @@
     }
   });
 
-  // Подписка на сообщения (получаем все письма, где получатель или отправитель - текущий пользователь)
+  // Подписка на сообщения
   function subscribeMessages(user) {
     if (window.unsubscribeMessages) window.unsubscribeMessages();
-
     window.unsubscribeMessages = db.collection('messages')
       .where('participants', 'array-contains', user.email)
       .orderBy('createdAt', 'asc')
@@ -403,24 +285,53 @@
     const msgDiv = document.createElement('div');
     msgDiv.classList.add('message');
     if (data.sender === currentEmail) msgDiv.classList.add('from-me');
-    msgDiv.innerHTML = `<strong>${data.sender}</strong>: ${escapeHtml(data.text)}`;
+    msgDiv.innerHTML = `${escapeHtml(data.sender)}: ${escapeHtml(data.text)}`;
     messagesList.appendChild(msgDiv);
   }
 
   // Отправка сообщения
-  composeForm.addEventListener('submit', e => {
+  composeForm.addEventListener('submit', async e => {
     e.preventDefault();
     const user = auth.currentUser;
     if (!user) return alert('Вы не авторизованы');
 
+    // Проверка банов и подсчёт плохих слов
+    const isBanned = await checkBan(user);
+    if (isBanned) {
+      alert('Вы заблокированы за использование нецензурной лексики. Попробуйте позже.');
+      return;
+    }
+
     const recipientName = recipientInput.value.trim().toLowerCase();
     if (!recipientName) return alert('Введите имя получателя');
-
     const recipientEmail = makeEmail(recipientName);
+
     const text = messageTextInput.value.trim();
     if (!text) return alert('Введите текст сообщения');
 
-    // Добавляем письмо в Firestore
+    const badWordCount = countBadWords(text);
+
+    if (badWordCount >= 60) {
+      await deleteUserAccount(user);
+      alert('Вы превысили допустимое количество нецензурных слов и ваш аккаунт удалён.');
+      return;
+    } else if (badWordCount >= 30) {
+      await setBan(user, 24 * 30); // 30 дней
+      alert('Вы превысили допустимое количество нецензурных слов. Вы заблокированы на месяц.');
+      messageTextInput.value = '';
+      return;
+    } else if (badWordCount >= 15) {
+      await setBan(user, 24 * 7); // 7 дней
+      alert('Вы превысили допустимое количество нецензурных слов. Вы заблокированы на неделю.');
+      messageTextInput.value = '';
+      return;
+    } else if (badWordCount >= 3) {
+      await setBan(user, 6); // 6 часов
+      alert('Вы превысили допустимое количество нецензурных слов. Вы заблокированы на 6 часов.');
+      messageTextInput.value = '';
+      return;
+    }
+
     db.collection('messages').add({
       sender: user.isAnonymous ? 'guest@hmail.org' : user.email,
       recipient: recipientEmail,
@@ -435,7 +346,7 @@
     });
   });
 
-  // Поддержка: отправка сообщения в коллекцию supportMessages
+  // Поддержка
   supportSendBtn.addEventListener('click', () => {
     const user = auth.currentUser;
     const msg = supportTextarea.value.trim();
@@ -455,20 +366,75 @@
       supportFeedback.style.color = '#228822';
       supportFeedback.textContent = 'Сообщение поддержки отправлено.';
       supportTextarea.value = '';
-      setTimeout(() => { supportFeedback.textContent = ''; }, 4000);
+      setTimeout(() => {
+        supportFeedback.textContent = '';
+      }, 4000);
     }).catch(err => {
       supportFeedback.style.color = '#a12323';
       supportFeedback.textContent = 'Ошибка отправки поддержки: ' + err.message;
     });
   });
 
-  // Экранирование HTML для безопасности
-  function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-  }
-</script>
+  // Бан система
 
-</body>
-</html>
+  const bannedWords = ['плохое1', 'плохое2', 'плохое3']; // сюда добавь все плохие слова
+
+  async function checkBan(user) {
+    if (!user || user.isAnonymous) return false;
+    const banDoc = await db.collection('bans').doc(user.uid).get();
+    if (!banDoc.exists) return false;
+    const data = banDoc.data();
+    if (data.until && data.until.toDate() > new Date()) return true;
+    await db.collection('bans').doc(user.uid).delete();
+    return false;
+  }
+
+  async function setBan(user, hours = 6) {
+    if (!user || user.isAnonymous) return;
+    const until = new Date(Date.now() + hours * 60 * 60 * 1000);
+    await db.collection('bans').doc(user.uid).set({
+      until: firebase.firestore.Timestamp.fromDate(until)
+    });
+  }
+
+  async function deleteUserAccount(user) {
+    if (!user || user.isAnonymous) return;
+    await db.collection('bans').doc(user.uid).delete().catch(() => {});
+    await db.collection('messages').where('participants', 'array-contains', user.email).get()
+      .then(snapshot => {
+        const batch = db.batch();
+        snapshot.forEach(doc => batch.delete(doc.ref));
+        return batch.commit();
+      }).catch(() => {});
+    await db.collection('users').doc(user.uid).delete().catch(() => {});
+    await auth.currentUser.delete().catch(() => {});
+    await db.collection('bans').doc(user.uid).set({ until: firebase.firestore.Timestamp.fromDate(new Date(8640000000000000)) });
+  }
+
+  function countBadWords(text) {
+    const lowerText = text.toLowerCase();
+    let count = 0;
+    for (const word of bannedWords) {
+      const regex = new RegExp(`\\b${word}\\b`, 'gi');
+      const matches = lowerText.match(regex);
+      if (matches) count += matches.length;
+    }
+    return count;
+  }
+
+  // Сброс пароля
+
+  resetPasswordBtn.addEventListener('click', async () => {
+    const username = resetUsernameInput.value.trim().toLowerCase();
+    if (!username) {
+      resetFeedback.style.color = 'red';
+      resetFeedback.textContent = 'Введите имя пользователя';
+      return;
+    }
+    const email = makeEmail(username);
+
+    try {
+      const methods = await auth.fetchSignInMethodsForEmail(email);
+      if (methods.length === 0) {
+        resetFeedback.style.color = 'red';
+        resetFeedback.text
